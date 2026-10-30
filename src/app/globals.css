@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+:root {
+  --background: #050505;
+  --foreground: #f3ead6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-rink: #050505;
+  --color-rink-mid: #161210;
+  --color-sand: #e4d2a8;
+  --color-sand-deep: #cbb889;
+  --color-bone: #f3ead6;
+  --color-clay: #c45c38;
+  --color-clay-deep: #9a3f28;
+  --color-mesa: #6e3b5c;
+  --color-kiva: #2f6b4a;
+  --font-sans: var(--font-outfit);
+  --font-display: var(--font-bebas);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-outfit), system-ui, sans-serif;
+}
+
+::selection {
+  background: #c45c38;
+  color: #f3ead6;
+}
+
+.desert-night {
+  background:
+    radial-gradient(980px 520px at 88% 8%, rgba(196, 92, 56, 0.22), transparent 58%),
+    radial-gradient(720px 420px at 8% 18%, rgba(110, 59, 92, 0.22), transparent 52%),
+    radial-gradient(640px 380px at 50% 88%, rgba(47, 107, 74, 0.14), transparent 50%),
+    #050505;
+}
+
+.kachina-grain {
+  background-image:
+    linear-gradient(135deg, rgba(228, 210, 168, 0.045) 1px, transparent 1px),
+    linear-gradient(45deg, rgba(196, 92, 56, 0.04) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6), transparent 90%);
+}
+
+.kachina-stripe {
+  background: linear-gradient(
+    90deg,
+    #c45c38 0%,
+    #e4d2a8 32%,
+    #6e3b5c 66%,
+    #2f6b4a 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
