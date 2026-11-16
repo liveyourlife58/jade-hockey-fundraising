@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { clubOptions, fundraisers, gear, goals, helpWays, site } from "@/data/site";
+import { clubOptions, fundraisers, goals, helpWays, site } from "@/data/site";
 import { CoyotesMark, JadeAction, PuckMark } from "@/components/coyotes-mark";
 import { GearBoard } from "@/components/gear-board";
 
@@ -13,7 +13,6 @@ const fadeUp = {
 export function HomePage() {
   const reduceMotion = useReducedMotion();
   const duration = reduceMotion ? 0 : 0.7;
-  const openGear = gear.filter((item) => item.status !== "sponsored");
 
   return (
     <div className="desert-night relative min-h-full overflow-x-hidden">
@@ -125,15 +124,17 @@ export function HomePage() {
           </div>
         </section>
 
+        <GearBoard />
+
         <section
           id="help"
           className="mx-auto w-full max-w-6xl scroll-mt-8 px-6 pb-20 lg:pb-28"
         >
           <SectionHeading
             eyebrow="Get involved"
-            title="3 Ways to help Jade play"
+            title="Additional ways to help Jade play"
           />
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
+          <div className="mt-10 grid gap-5 md:grid-cols-2">
             {helpWays.map((item, index) => (
               <motion.article
                 key={item.id}
@@ -158,36 +159,7 @@ export function HomePage() {
                     {item.description}
                   </p>
                 ) : null}
-                {item.openGear ? (
-                  openGear.length > 0 ? (
-                    <ul className="mt-6 space-y-2">
-                      {openGear.map((slot) => (
-                        <li key={slot.id}>
-                          <a
-                            href="#gear"
-                            className="group/slot flex items-baseline justify-between gap-3 text-sm"
-                          >
-                            <span className="text-sand/85 transition group-hover/slot:text-bone">
-                              {slot.name}
-                              {slot.status === "upgrade-needed" ? (
-                                <span className="ml-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-clay">
-                                  Upgrade
-                                </span>
-                              ) : null}
-                            </span>
-                            <span className="shrink-0 font-display text-lg text-clay transition group-hover/slot:text-sand">
-                              ${slot.amount}
-                            </span>
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="mt-6 text-sm text-sand/70">
-                      Every slot is sponsored right now.
-                    </p>
-                  )
-                ) : item.clubSupport ? (
+                {item.clubSupport ? (
                   <ul className="mt-6 space-y-4">
                     {clubOptions.map((option) => (
                       <li key={option.id}>
@@ -262,8 +234,6 @@ export function HomePage() {
             ))}
           </div>
         </section>
-
-        <GearBoard />
 
         <section className="mx-auto w-full max-w-6xl px-6 pb-24">
           <motion.div

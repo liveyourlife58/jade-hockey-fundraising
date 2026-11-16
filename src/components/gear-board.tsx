@@ -4,7 +4,14 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { QRCodeSVG } from "qrcode.react";
-import { gear, site, venmoPayUrl, type GearItem, type GearStatus } from "@/data/site";
+import {
+  gear,
+  site,
+  teamFees,
+  venmoPayUrl,
+  type GearItem,
+  type GearStatus,
+} from "@/data/site";
 import { GearArt } from "@/components/gear-art";
 
 const fadeUp = {
@@ -18,69 +25,154 @@ const badgeCopy: Record<GearStatus, (item: GearItem) => string> = {
   available: () => "Open Slot",
 };
 
+function formatDollars(amount: number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(amount);
+}
+
 export function GearBoard() {
   const reduceMotion = useReducedMotion();
   const duration = reduceMotion ? 0 : 0.7;
   const venmoUrl = venmoPayUrl();
+  const progress = Math.min(
+    100,
+    Math.round((teamFees.raised / teamFees.goal) * 100),
+  );
+  const remaining = Math.max(0, teamFees.goal - teamFees.raised);
 
   return (
     <section
       id="gear"
       className="mx-auto w-full max-w-6xl scroll-mt-8 px-6 pb-20 lg:pb-28"
     >
-      <div className="grid items-center gap-8 overflow-hidden rounded-2xl border border-sand/15 bg-white/5 p-6 md:grid-cols-[1.2fr_auto] md:p-8">
-        <div>
-          <p className="text-xs uppercase tracking-[0.24em] text-clay">
-            Sponsor her gear
-          </p>
-          <h2 className="mt-3 font-display text-4xl text-bone sm:text-5xl">
-            Put your name on what Jade wears.
-          </h2>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-sand/75">
-            Your name or company stays on that card — like an ad on the ice —
-            until she needs an upgrade. Then the badge comes down, “Upgrade
-            Needed” goes up, and the next sponsor takes the slot.
-          </p>
-          <ol className="mt-5 space-y-3 text-sm leading-6 text-sand/80">
-            <li>
-              <span className="font-semibold text-clay">01</span> Choose an
-              open slot or anything marked Upgrade Needed.
-            </li>
-            <li>
-              <span className="font-semibold text-clay">02</span> Scan the
-              Venmo code and send that item’s amount with the gear name in the
-              note.
-            </li>
-            <li>
-              <span className="font-semibold text-clay">03</span> We’ll put
-              your name or company on the badge while Jade wears it.
-            </li>
-          </ol>
+      <div
+        id="fees"
+        className="scroll-mt-8 overflow-hidden rounded-2xl border border-sand/15 bg-white/5"
+      >
+        <div className="kachina-stripe h-1.5" />
+        <div className="grid gap-8 p-6 md:grid-cols-3 md:items-center md:p-8">
+          <div>
+            <p className="text-xs uppercase tracking-[0.24em] text-clay">
+              {teamFees.seasonLabel}
+            </p>
+            <h2 className="mt-3 font-display text-4xl text-bone sm:text-5xl">
+              Help Jade stay on the ice
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-sand/75">
+              Ice time, coaching, tournaments, and travel for Kachina’s 14U Red.
+            </p>
+            <h3 className="mt-6 font-display text-3xl text-bone">
+              {formatDollars(teamFees.goal)} goal
+            </h3>
+            <div className="mt-4 flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <p className="font-display text-3xl text-clay">
+                  {formatDollars(teamFees.raised)}
+                </p>
+                <p className="mt-1 text-[11px] uppercase tracking-[0.16em] text-sand/60">
+                  raised
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="font-display text-2xl text-bone">
+                  {formatDollars(remaining)}
+                </p>
+                <p className="mt-1 text-[11px] uppercase tracking-[0.16em] text-sand/60">
+                  to go
+                </p>
+              </div>
+            </div>
+            <div
+              className="relative mt-6 py-5"
+              role="progressbar"
+              aria-valuenow={progress}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label={`${progress}% of team fees raised`}
+            >
+              <div className="h-2.5 overflow-hidden rounded-sm bg-rink/80">
+                <motion.div
+                  className="kachina-stripe h-full"
+                  initial={reduceMotion ? false : { width: 0 }}
+                  whileInView={{ width: `${progress}%` }}
+                  viewport={{ once: true }}
+                  transition={{ duration: duration || 1.1, ease: "easeOut" }}
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+              <motion.div
+                className="pointer-events-none absolute top-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
+                initial={reduceMotion ? false : { left: "0%" }}
+                whileInView={{ left: `${progress}%` }}
+                viewport={{ once: true }}
+                transition={{ duration: duration || 1.1, ease: "easeOut" }}
+                style={{ left: `${progress}%` }}
+              >
+                <Image
+                  src="/fs-arizona-coyotes-primary-on-black-2022-750x487.png"
+                  alt=""
+                  width={72}
+                  height={47}
+                  className="h-12 w-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]"
+                />
+              </motion.div>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-clay">
+              Gear board
+            </p>
+            <h3 className="mt-2 font-display text-4xl text-bone sm:text-5xl">
+              Put your name on what she wears
+            </h3>
+            <p className="mt-3 text-sm leading-6 text-sand/75">
+              Sponsored slots stay on the board until she needs an upgrade. Then
+              the badge comes down and the next sponsor takes the slot.
+            </p>
+            <ol className="mt-4 space-y-2 text-sm leading-6 text-sand/80">
+              <li>
+                <span className="font-semibold text-clay">01</span> Pick an open
+                slot or Upgrade Needed item below.
+              </li>
+              <li>
+                <span className="font-semibold text-clay">02</span> Scan the code
+                and send that amount with the gear name in the note.
+              </li>
+              <li>
+                <span className="font-semibold text-clay">03</span> Your name goes
+                on the badge while Jade wears it.
+              </li>
+            </ol>
+          </div>
+
+          <a
+            href={venmoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative mx-auto h-fit w-full max-w-[14rem] overflow-hidden rounded-2xl border border-sand/20 bg-rink px-5 pb-5 pt-6 text-center md:mx-0 md:justify-self-end"
+            aria-label="Open Venmo for Jade's team fees or gear"
+          >
+            <span className="mx-auto block w-fit overflow-hidden rounded-sm bg-bone p-2">
+              <QRCodeSVG
+                value={venmoUrl}
+                size={168}
+                bgColor="#f3ead6"
+                fgColor="#050505"
+                marginSize={4}
+                level="M"
+                title="Venmo QR for Jade's team fees and gear"
+              />
+            </span>
+            <span className="mt-3 block font-display text-xl text-clay">
+              Venmo
+            </span>
+            <span className="mt-1 block text-xs text-sand/70">@{site.venmo}</span>
+          </a>
         </div>
-        <a
-          href={venmoUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="relative mx-auto overflow-hidden rounded-2xl border border-sand/20 bg-rink px-5 pb-5 pt-6 text-center"
-          aria-label="Open Venmo to sponsor Jade's gear"
-        >
-          <div className="kachina-stripe absolute inset-x-0 top-0 h-1.5" />
-          <span className="mx-auto block w-fit overflow-hidden rounded-sm bg-bone p-2">
-            <QRCodeSVG
-              value={venmoUrl}
-              size={168}
-              bgColor="#f3ead6"
-              fgColor="#050505"
-              marginSize={4}
-              level="M"
-              title="Venmo QR for Jade's hockey gear"
-            />
-          </span>
-          <span className="mt-3 block font-display text-xl text-clay">
-            Venmo
-          </span>
-          <span className="mt-1 block text-xs text-sand/70">@{site.venmo}</span>
-        </a>
       </div>
 
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

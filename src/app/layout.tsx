@@ -16,7 +16,7 @@ const bebas = Bebas_Neue({
 export const metadata: Metadata = {
   title: "Jade's Hockey Fundraising",
   description:
-    "Three ways to help Jade play this season: sponsor her gear, shop a fundraiser, or support her hockey club.",
+    "Help cover Jade’s $10,000 team fees, shop a fundraiser, or support her hockey club this season.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

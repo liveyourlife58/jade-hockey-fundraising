@@ -12,7 +12,7 @@ export const site = {
   team: "Kachina’s 14U Red",
   headline: "Help Jade hit the ice this season",
   intro:
-    "Hockey is Jade’s favorite thing in the world — early practices, new skates, private coaching, tournament travel, and all the little costs that add up fast. There are three ways to help: sponsor her gear, shop a fundraiser, or support her hockey club. Every bit helps cover her season, including the extra coaching that keeps her growing on the ice.",
+    "Hockey is Jade’s favorite thing in the world — early practices, new skates, private coaching, tournament travel, and all the little costs that add up fast. Her gear is covered — the next big need is team fees. Shop a fundraiser, support her hockey club, or Venmo toward her season. Every bit helps keep her growing on the ice.",
   thankYou:
     "Thank you for supporting Jade. It means the world to our family, and it keeps her on the ice.",
   /**
@@ -22,6 +22,19 @@ export const site = {
   venmo: "Brandie-Sager",
   venmoUrl:
     "https://venmo.com/code?user_id=2735823569027072424&created=1793559674",
+};
+
+/**
+ * Season team-fee goal. Update `raised` as donations come in.
+ */
+export const teamFees = {
+  goal: 10000,
+  raised: 4000,
+  seasonLabel: "2026–2027",
+  title: "Help cover Jade’s team fees",
+  description:
+    "Ice time, coaching, tournaments, and travel add up fast. Jade’s yearly team fees are $10,000 — any amount toward that goal keeps her on the ice with Kachina’s 14U Red.",
+  noteHint: 'Put “team fees” in the Venmo note.',
 };
 
 /**
@@ -68,32 +81,20 @@ export type HelpWay = {
   cta?: string;
   tag: string;
   shops?: boolean;
-  openGear?: boolean;
   clubSupport?: boolean;
 };
 
 export const helpWays: HelpWay[] = [
   {
-    id: "sponsor-gear",
-    number: "01",
-    title: "Sponsor Her Gear",
-    description:
-      "Put your name on a helmet, stick, or pair of skates. Your support stays on that card until she needs an upgrade.",
-    href: "#gear",
-    cta: "See the gear board",
-    tag: "Venmo",
-    openGear: true,
-  },
-  {
     id: "fundraiser",
-    number: "02",
+    number: "01",
     title: "Purchase from a Fundraiser",
     tag: "Shop",
     shops: true,
   },
   {
     id: "hockey-club",
-    number: "03",
+    number: "02",
     title: "Support Kachina’s Girls Hockey Club",
     description:
       "Help the Kachinas keep Jade on the ice — donate, or put your name on team gear around the rink.",
@@ -191,19 +192,22 @@ export const gear: GearItem[] = [
     id: "helmet",
     name: "Helmet",
     description: "The lid that keeps her safe at every practice and game.",
-    amount: 450,
+    amount: 700,
     status: "sponsored",
     sponsor: "Arlo Webb",
     thankYou:
       "My brain helps me make great decisions on the ice. Thank you for protecting it! Love you Great Grandpa!",
-    photo: "/BauerReAkt3D.png",
+    photo: "/CCMTacksXCustom.png",
   },
   {
     id: "shoulders",
     name: "Shoulder Pads",
     description: "Upper-body protection for battles in the corners.",
     amount: 200,
-    status: "available",
+    status: "sponsored",
+    sponsor: "Shannon Sager",
+    thankYou:
+      "These keep me safe when I battle in the corners. Thank you for having my back, Grandpa!",
     photo: "/ccm-jetspeed-ftw-shoulder-pads.png",
   },
   {
@@ -211,7 +215,10 @@ export const gear: GearItem[] = [
     name: "Breezers / Pants",
     description: "Hockey pants with the padding she needs in her own end.",
     amount: 150,
-    status: "available",
+    status: "sponsored",
+    sponsor: "Shannon Sager",
+    thankYou:
+      "I feel ready for every shift in these. Thank you for helping me play hard. Love you Grandpa!",
     photo: "/ASVPRP_PANT_1.png",
   },
   {
@@ -219,7 +226,10 @@ export const gear: GearItem[] = [
     name: "Shin Pads",
     description: "Blocked shots and slap passes start here.",
     amount: 150,
-    status: "available",
+    status: "sponsored",
+    sponsor: "Shannon Sager",
+    thankYou:
+      "Blocked shots don’t scare me with these on. Thank you for protecting my legs. Love you Grandpa!",
     photo: "/BauerSupremeM5ProShinGuards.png",
   },
   {
@@ -227,7 +237,10 @@ export const gear: GearItem[] = [
     name: "Elbow Pads",
     description: "Protection for every fall, bump, and board battle.",
     amount: 75,
-    status: "available",
+    status: "sponsored",
+    sponsor: "Shannon Sager",
+    thankYou:
+      "Every bump and board battle feels a little safer. Thank you Grandpa!",
     photo: "/BauerSupremeM3ElbowPads.png",
   },
   {
@@ -257,7 +270,10 @@ export const gear: GearItem[] = [
     name: "Skate Sharpening",
     description: "Edges wear down fast. This slot comes back around often.",
     amount: 15,
-    status: "available",
+    status: "sponsored",
+    sponsor: "Leighanne Fitzgerald",
+    thankYou:
+      "Sharp edges help me turn, stop, and race down the ice. Thank you!",
     photo: "/SPARX-HOCKEY-SKATE-SHARPENER-3-V1-FOUR.png",
   },
   {
@@ -265,7 +281,10 @@ export const gear: GearItem[] = [
     name: "Tape Bag",
     description: "Stick tape, shin-pad tape, and the little stuff that disappears.",
     amount: 20,
-    status: "available",
+    status: "sponsored",
+    sponsor: "Leighanne Fitzgerald",
+    thankYou:
+      "Tape disappears so fast — thank you for keeping my stick ready for every game!",
     photo: "/HockeyTapeBag.png",
   },
 ];
