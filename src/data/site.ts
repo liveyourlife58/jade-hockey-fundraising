@@ -29,7 +29,7 @@ export const site = {
  */
 export const teamFees = {
   goal: 10000,
-  raised: 4000,
+  raised: 0,
   seasonLabel: "2026–2027",
   title: "Help cover Jade’s team fees",
   description:
