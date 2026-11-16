@@ -181,6 +181,8 @@ export type GearItem = {
   name: string;
   description: string;
   amount: number;
+  /** When set, the card shows `$amount × qty` (she needs more than one). */
+  quantity?: number;
   status: GearStatus;
   sponsor?: string;
   thankYou?: string;
@@ -256,14 +258,15 @@ export const gear: GearItem[] = [
   },
   {
     id: "stick",
-    name: "Stick",
-    description: "Her shot, her pass, her whole game in her hands.",
+    name: "Stick / Backup",
+    description: "Her shot, her pass, her whole game in her hands — plus a backup when one breaks.",
     amount: 300,
+    quantity: 2,
     status: "sponsored",
     sponsor: "Shannon Sager",
     thankYou:
       "I grin every time I tape this stick before a game. Thank you for helping me play the sport I love. Love you Grandpa!",
-    photo: "/hyperlite_stick.png",
+    photo: "/CCMTrigger9Pair.png",
   },
   {
     id: "sharpening",

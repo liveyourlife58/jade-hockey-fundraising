@@ -274,7 +274,12 @@ function GearCard({
         <h3 className="font-display text-3xl text-bone">{item.name}</h3>
         <p className="mt-2 text-sm leading-6 text-sand/75">{item.description}</p>
         <div className="mt-3 flex items-center justify-between gap-3">
-          <p className="font-display text-2xl text-clay">${item.amount}</p>
+          <p className="font-display text-2xl text-clay">
+            ${item.amount}
+            {item.quantity && item.quantity > 1 ? (
+              <span className="ml-1.5 text-lg text-sand/70">× {item.quantity}</span>
+            ) : null}
+          </p>
           {hasThanks ? (
             <button
               type="button"
