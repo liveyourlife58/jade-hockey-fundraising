@@ -8,6 +8,7 @@ import {
   gear,
   site,
   teamFees,
+  teamFeesRaised,
   venmoPayUrl,
   type GearItem,
   type GearStatus,
@@ -37,11 +38,9 @@ export function GearBoard() {
   const reduceMotion = useReducedMotion();
   const duration = reduceMotion ? 0 : 0.7;
   const venmoUrl = venmoPayUrl();
-  const progress = Math.min(
-    100,
-    Math.round((teamFees.raised / teamFees.goal) * 100),
-  );
-  const remaining = Math.max(0, teamFees.goal - teamFees.raised);
+  const raised = teamFeesRaised();
+  const progress = Math.min(100, Math.round((raised / teamFees.goal) * 100));
+  const remaining = Math.max(0, teamFees.goal - raised);
 
   return (
     <section
@@ -53,7 +52,7 @@ export function GearBoard() {
         className="scroll-mt-8 overflow-hidden rounded-2xl border border-sand/15 bg-white/5"
       >
         <div className="kachina-stripe h-1.5" />
-        <div className="grid gap-8 p-6 md:grid-cols-3 md:items-center md:p-8">
+        <div className="grid gap-8 p-6 md:grid-cols-3 md:items-start md:p-8">
           <div>
             <p className="text-xs uppercase tracking-[0.24em] text-clay">
               {teamFees.seasonLabel}
@@ -61,16 +60,10 @@ export function GearBoard() {
             <h2 className="mt-3 font-display text-4xl text-bone sm:text-5xl">
               Help Jade stay on the ice
             </h2>
-            <p className="mt-3 text-sm leading-6 text-sand/75">
-              Ice time, coaching, tournaments, and travel for Kachina’s 14U Red.
-            </p>
-            <h3 className="mt-6 font-display text-3xl text-bone">
-              {formatDollars(teamFees.goal)} goal
-            </h3>
-            <div className="mt-4 flex flex-wrap items-end justify-between gap-3">
+            <div className="mt-6 flex flex-wrap items-end justify-between gap-3">
               <div>
                 <p className="font-display text-3xl text-clay">
-                  {formatDollars(teamFees.raised)}
+                  {formatDollars(raised)}
                 </p>
                 <p className="mt-1 text-[11px] uppercase tracking-[0.16em] text-sand/60">
                   raised
@@ -86,40 +79,71 @@ export function GearBoard() {
               </div>
             </div>
             <div
-              className="relative mt-6 py-5"
+              className="relative mt-6 py-5 pl-3 pr-5"
               role="progressbar"
               aria-valuenow={progress}
               aria-valuemin={0}
               aria-valuemax={100}
               aria-label={`${progress}% of team fees raised`}
             >
-              <div className="h-2.5 overflow-hidden rounded-sm bg-rink/80">
+              <div className="relative">
+                <div className="h-2.5 overflow-hidden rounded-sm border border-sand/25 bg-rink/80">
+                  <motion.div
+                    className="kachina-stripe h-full"
+                    initial={reduceMotion ? false : { width: 0 }}
+                    whileInView={{ width: `${progress}%` }}
+                    viewport={{ once: true }}
+                    transition={{ duration: duration || 1.1, ease: "easeOut" }}
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
                 <motion.div
-                  className="kachina-stripe h-full"
-                  initial={reduceMotion ? false : { width: 0 }}
-                  whileInView={{ width: `${progress}%` }}
+                  className="pointer-events-none absolute top-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
+                  initial={reduceMotion ? false : { left: "0%" }}
+                  whileInView={{ left: `${progress}%` }}
                   viewport={{ once: true }}
                   transition={{ duration: duration || 1.1, ease: "easeOut" }}
-                  style={{ width: `${progress}%` }}
-                />
+                  style={{ left: `${progress}%` }}
+                >
+                  <Image
+                    src="/fs-arizona-coyotes-primary-on-black-2022-750x487.png"
+                    alt=""
+                    width={72}
+                    height={47}
+                    className="h-12 w-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]"
+                  />
+                </motion.div>
+                <div className="pointer-events-none absolute right-0 top-1/2 z-10 translate-x-1/2 -translate-y-1/2">
+                  <Image
+                    src="/net2.png"
+                    alt=""
+                    width={56}
+                    height={56}
+                    className="h-12 w-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]"
+                  />
+                </div>
               </div>
-              <motion.div
-                className="pointer-events-none absolute top-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
-                initial={reduceMotion ? false : { left: "0%" }}
-                whileInView={{ left: `${progress}%` }}
-                viewport={{ once: true }}
-                transition={{ duration: duration || 1.1, ease: "easeOut" }}
-                style={{ left: `${progress}%` }}
-              >
-                <Image
-                  src="/fs-arizona-coyotes-primary-on-black-2022-750x487.png"
-                  alt=""
-                  width={72}
-                  height={47}
-                  className="h-12 w-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]"
-                />
-              </motion.div>
             </div>
+            {teamFees.donors.length > 0 ? (
+              <div className="mt-6">
+                <p className="text-[11px] uppercase tracking-[0.16em] text-sand/60">
+                  Donors
+                </p>
+                <ul className="mt-3 space-y-2">
+                  {teamFees.donors.map((donor) => (
+                    <li
+                      key={`${donor.name}-${donor.amount}`}
+                      className="flex items-baseline justify-between gap-3 text-sm"
+                    >
+                      <span className="text-sand/85">{donor.name}</span>
+                      <span className="shrink-0 font-display text-lg text-clay">
+                        {formatDollars(donor.amount)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
           </div>
 
           <div>
@@ -153,7 +177,7 @@ export function GearBoard() {
             href={venmoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative mx-auto h-fit w-full max-w-[14rem] overflow-hidden rounded-2xl border border-sand/20 bg-rink px-5 pb-5 pt-6 text-center md:mx-0 md:justify-self-end"
+            className="relative mx-auto h-fit w-full max-w-[14rem] overflow-hidden rounded-2xl border border-sand/20 bg-rink px-5 pb-5 pt-6 text-center md:mx-0 md:justify-self-end md:self-center"
             aria-label="Open Venmo for Jade's team fees or gear"
           >
             <span className="mx-auto block w-fit overflow-hidden rounded-sm bg-bone p-2">

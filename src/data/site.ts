@@ -25,17 +25,28 @@ export const site = {
 };
 
 /**
- * Season team-fee goal. Update `raised` as donations come in.
+ * Season team-fee goal. Add donors below — raised updates from the list.
  */
+export type TeamFeeDonor = {
+  name: string;
+  amount: number;
+};
+
 export const teamFees = {
   goal: 10000,
-  raised: 0,
   seasonLabel: "2026–2027",
   title: "Help cover Jade’s team fees",
   description:
     "Ice time, coaching, tournaments, and travel add up fast. Jade’s yearly team fees are $10,000 — any amount toward that goal keeps her on the ice with Kachina’s 14U Red.",
   noteHint: 'Put “team fees” in the Venmo note.',
+  donors: [
+    { name: "David Sager", amount: 250 },
+  ] satisfies TeamFeeDonor[],
 };
+
+export function teamFeesRaised() {
+  return teamFees.donors.reduce((sum, donor) => sum + donor.amount, 0);
+}
 
 /**
  * Jade’s goals. Add or edit items here — the section updates automatically.
